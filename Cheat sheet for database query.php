@@ -4,7 +4,7 @@ Cheat sheet for building Yii2 queries both with ActiveRecord and manually
 */
 
 # ===============================================
-# USING MODELS
+# USING MODELS (ActiveRecord)
 # ===============================================
 // http://www.yiiframework.com/doc-2.0/guide-db-active-record.html
 
@@ -148,7 +148,7 @@ $affectedRows = \Yii::$app->db->createCommand()->update('main_people', [
 $id = \Yii::$app->db->getLastInsertID();  //after a createCommand() INSERT query
 
 // DELETE
-$affectedRows = \Yii::$app->db->createCommand()->delete('main_modules', ['mod_templateID' => $templ_model->templateID])->execute();
+$affectedRows = \Yii::$app->db->createCommand()->delete('main_modules', ['mod_templateID' => 4245])->execute();
 
 
 # ===============================================
