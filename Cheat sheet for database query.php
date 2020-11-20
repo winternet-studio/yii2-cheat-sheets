@@ -43,6 +43,7 @@ Customer::find()
 ->andWhere(['like', new \yii\db\Expression('CONCAT(cont_firstname, ' ', cont_lastname)'), str_replace(' ', '%', 'john doe'), false])  // CONCAT(cont_firstname, ' ', cont_lastname) LIKE '%john%doe%'
 ->andWhere(['not like', 'lm_name', 'john'])  // lm_name NOT LIKE '%john%'
 ->andWhere(['like binary', 'lm_name', 'John'])  // `lm_name` LIKE BINARY 'John'
+->andWhere(['and', ['like', 'firstname', 'John'], ['like', 'lastname', 'Doe']])  // `firstname` LIKE 'John' AND `lastname` LIKE 'Doe'  (it doesn't work without the 'and' entry - and cannot be mixed with `'column' => 'value'` entries)
 
 // Use IS NOT NULL:
 ->andWhere(['not', ['lm_pagenum' => null]])  // http://stackoverflow.com/questions/29796329/how-to-use-not-null-condition-in-yii2#29796691
@@ -79,7 +80,7 @@ Customer::find()->limit(10);
 // Getting the raw SQL:
 Layout::find()
 	->where(['lay_customerID' => 999])
-	->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql;  //source: https://stackoverflow.com/questions/27389146/log-the-actual-sql-query-using-activerecord-with-yii2
+	->prepare(\Yii::$app->db->queryBuilder)->createCommand()->rawSql;  //source: https://stackoverflow.com/questions/27389146/log-the-actual-sql-query-using-activerecord-with-yii2
 
 
 // Find by manual SQL
