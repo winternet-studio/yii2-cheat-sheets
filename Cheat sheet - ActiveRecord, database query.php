@@ -52,6 +52,7 @@ Customer::find()
 ->andWhere(['in', 'moduleID', [1,2,3]])
 ->andWhere(['moduleID', => [1,2,3]])
 ->andWhere(['not in', 'moduleID', [1,2,3]])
+->andWhere(['not', ['lm_pagenum' => [1,2,3]]])
 
 // Use other operators:
 ->andWhere(['<>', 'moduleID', 10])  // moduleID <> 10  (remember that this will not include NULL values)
@@ -176,3 +177,53 @@ try {
 	$transaction->rollBack();
 	throw $e;
 }
+
+
+# ===============================================
+# USING QUERY STRING eg. in REST API (DataFilter)
+# ===============================================
+// Documentation: https://www.yiiframework.com/doc/guide/2.0/en/rest-resources#fields, https://www.yiiframework.com/doc/api/2.0/yii-data-datafilter
+
+// Search for lastname being Smith
+filter[lastname]=Smith
+
+// Possible operators:
+[and]   :  AND
+[or]    :  OR
+[not]   :  NOT
+[lt]    :  <
+[gt]    :  >
+[lte]   :  <=
+[gte]   :  >=
+[eq]    :  =
+[neq]   :  !=
+[in]    :  IN
+[nin]   :  NOT IN
+[like]  :  LIKE
+
+// Search for lastname containing Smith
+filter[lastname][like]=Smith
+
+// Search for address being NULL
+filter[address]=NULL
+
+// Search for address being NOT NULL
+filter[not][address]=NULL
+
+// Search for userID being either 11, 15 or 18
+filter[userID][in][0]=11&filter[userID][in][1]=15&filter[userID][in][2]=18
+
+// Search for lastname being Smith or Johnson
+filter[or][0][lastname]=Smith&filter[or][1][lastname]=Johnson
+
+// Search for lastname containing Smith or Johnson
+filter[or][0][lastname][like]=Smith&filter[or][1][lastname][like]=Johnson
+
+// Select fields to return (does not affect expanded models)
+fields=userID,email
+
+// Include fields from related post if defined in extraFields()
+expand=post
+
+// Include field role from related post if defined in post's extraFields()
+expand=post.role
