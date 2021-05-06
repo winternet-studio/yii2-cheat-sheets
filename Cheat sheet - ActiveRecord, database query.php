@@ -65,6 +65,10 @@ Customer::find()
 // Use "local" OR:
 ->andWhere(['or', ['in', 'moduleID', [1,2,3]], ['mod_is_master' => 1]])  //= (moduleID IN (1, 2, 3) OR mod_is_master = 1)
 
+// Use a subquery (eg. get products that have the tag 'shippable')
+$tagSubQuery = Tag::find()->select('tag_productID')->where(['name' => 'shippable']);
+$products = Product::find()->where(['in', 'productID', $tagSubQuery])->all();  //or 'not in'
+
 // See https://www.yiiframework.com/doc/api/2.0/yii-db-queryinterface#where()-detail for even more
 
 // Use manual writing of SQL:
