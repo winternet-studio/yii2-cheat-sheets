@@ -223,10 +223,10 @@ filter[or][0][lastname]=Smith&filter[or][1][lastname]=Johnson
 // Search for lastname containing Smith or Johnson
 filter[or][0][lastname][like]=Smith&filter[or][1][lastname][like]=Johnson
 
-// Select fields to return (does not affect expanded models)
+// Select fields (attributes) to return (does not affect expanded models)
 fields=userID,email
 
-// Include fields from related post if defined in extraFields()
+// Include fields from related post if defined in extraFields() (`post` is the name of the relation which is defined by the model method `getPost()`)
 expand=post
 
 // Include field role from related post if defined in post's extraFields()
