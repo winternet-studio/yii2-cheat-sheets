@@ -249,5 +249,9 @@ fields=userID,email
 // Include fields from related post if defined in extraFields() (`post` is the name of the relation which is defined by the model method `getPost()`)
 expand=post
 
-// Include field role from related post if defined in post's extraFields()
+// Include fields from the role model that is related to the post that is related to our primary model (if `role` is defined in post's extraFields())
+//   This way you can keep digging through the relations
 expand=post.role
+
+// Include fields both from related post AND from related addresses if defined in extraFields(). You can dig still deeper with "." as well.
+expand=post,address
