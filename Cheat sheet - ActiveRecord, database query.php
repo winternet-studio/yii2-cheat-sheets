@@ -183,6 +183,26 @@ try {
 }
 
 
+// Create transaction with option for soft errors/exceptions within the try..catch:
+$errors = [];
+try {
+
+	if ($somethingFailed) {
+		throw new \EndUserSafeException('Invalid user status.');  //create the exception class you want to use, EndUserSafeException is just an example
+	}
+
+	$transaction->commit();
+} catch (\EndUserSafeException $e) {
+	$transaction->rollBack();
+	$errors[] = $e->getMessage();
+
+} catch (\Exception $e) {
+	$transaction->rollBack();
+	throw $e;
+}
+
+
+
 # ===============================================
 # USING QUERY STRING eg. in REST API (DataFilter)
 # ===============================================
