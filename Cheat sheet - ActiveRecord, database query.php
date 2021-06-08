@@ -58,6 +58,8 @@ Customer::find()
 ->andWhere(['<>', 'moduleID', 10])  // moduleID <> 10  (remember that this will not include NULL values)
 ->andWhere(['>=', 'moduleID', 10])  // moduleID >= 10
 ->andWhere(['>=', 'date_begin', new \yii\db\Expression('NOW()')])  // date_begin >= NOW()
+			// NOTE: the other way around won't work, then you must do it like this:
+			->andWhere(['<', new \yii\db\Expression('NOW()'), new \yii\db\Expression('date_begin') ])  // without Expression() the field name will become a string!
 ->andWhere(['>', new \yii\db\Expression('DATEDIFF(NOW(), lay_last_access)'), 30])  // DATEDIFF(...) > 30
 ->andWhere(['>', new \yii\db\Expression("TIMESTAMPDIFF(MINUTE,'2003-02-01','2003-05-01 12:05:55')"), 120000])
 ->andWhere(['between', 'price', 100, 1000])  // price BETWEEN 100 AND 1000
@@ -168,7 +170,7 @@ $affectedRows = \Yii::$app->db->createCommand()->delete('main_modules', ['mod_te
 
 
 // Create transaction:
-$transaction = \Yii::$app->db->beginTransaction();
+$transaction = \Yii::$app->db->beginTransaction();  // Yii2 automatically handles nested transactions by using Savepoints - otherwise it throws error if underlying DBMS doesn't support it
 try {
 	\Yii::$app->db->createCommand($sql1)->execute();
 	\Yii::$app->db->createCommand($sql2)->execute();
