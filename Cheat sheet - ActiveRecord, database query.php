@@ -257,3 +257,9 @@ expand=post.role
 
 // Include fields both from related post AND from related addresses if defined in extraFields(). You can dig still deeper with "." as well.
 expand=post,address
+
+// Page number to retrieve when using pagination/Serializer
+page=3
+
+// Number of records to return per response when using pagination/Serializer
+per-page=200
