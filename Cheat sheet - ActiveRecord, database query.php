@@ -23,11 +23,11 @@ Customer::findAll(['usr_status' => 'active']);
 
 // Return records based on a condition in a related table
 Customer::find()
-	->joinWith('orders')  //LEFT JOIN  (relation name is used)
+	->joinWith('orders theOrders')  //LEFT JOIN  (relation name is used)
 	->joinWith('orders.orderLines')  //LEFT JOIN  (relation names are used)
 	->joinWith('orders.orderTags')  //LEFT JOIN  (relation names are used)
 	->innerJoinWith('addresses')  //INNER JOIN  (relation name is used)
-	->where(['main_orders.ord_status' => Order::STATUS_ACTIVE])   //table name not needed if column name is unique
+	->where(['theOrders.ord_status' => Order::STATUS_ACTIVE])   //table name not needed if column name is unique
 	->all();    // http://www.yiiframework.com/doc-2.0/guide-db-active-record.html#relational-data
 
 // Use expressions in SELECT (here with a joined table)
@@ -244,6 +244,9 @@ filter[or][0][lastname]=Smith&filter[or][1][lastname]=Johnson
 
 // Search for lastname containing Smith or Johnson
 filter[or][0][lastname][like]=Smith&filter[or][1][lastname][like]=Johnson
+
+// Sort by firstname
+sort=firstname
 
 // Select fields (attributes) to return (does not affect expanded models)
 fields=userID,email
