@@ -245,8 +245,11 @@ filter[or][0][lastname]=Smith&filter[or][1][lastname]=Johnson
 // Search for lastname containing Smith or Johnson
 filter[or][0][lastname][like]=Smith&filter[or][1][lastname][like]=Johnson
 
-// Sort by firstname
+// Sort by firstname ascendingly (see also https://www.yiiframework.com/doc/api/2.0/yii-data-sort for defining custom sorting)
 sort=firstname
+
+// Sort by firstname descendingly
+sort=-firstname
 
 // Select fields (attributes) to return (does not affect expanded models)
 fields=userID,email
