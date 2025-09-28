@@ -63,9 +63,21 @@ Customer::find()
 ->andWhere(['>', new \yii\db\Expression('DATEDIFF(NOW(), lay_last_access)'), 30])  // DATEDIFF(...) > 30
 ->andWhere(['>', new \yii\db\Expression("TIMESTAMPDIFF(MINUTE,'2003-02-01','2003-05-01 12:05:55')"), 120000])
 ->andWhere(['between', 'price', 100, 1000])  // price BETWEEN 100 AND 1000
+->andWhere(['REGEXP', 'description', "/NB\\s*=/"])  // description REGEXP 'NB\s*='
 
 // Use "local" OR:
 ->andWhere(['or', ['in', 'moduleID', [1,2,3]], ['mod_is_master' => 1]])  //= (moduleID IN (1, 2, 3) OR mod_is_master = 1)
+
+// Complex with both OR and AND:
+->andWhere([
+	'or',
+	['user.status' => 1],
+	[
+		'and',
+		['product.available' => 1],
+		['not', ['product.category' => 'electronics']],
+	],
+]);
 
 // Use a subquery (eg. get products that have the tag 'shippable')
 $tagSubQuery = Tag::find()->select('tag_productID')->where(['name' => 'shippable']);
@@ -89,7 +101,8 @@ Customer::find()->limit(10);
 Layout::find()
 	->where(['lay_customerID' => 999])
 	->prepare(\Yii::$app->db->queryBuilder)->createCommand()->rawSql;  //source: https://stackoverflow.com/questions/27389146/log-the-actual-sql-query-using-activerecord-with-yii2
-
+	// Or just like this seems to work too:
+	->where(['lay_customerID' => 999])->createCommand()->rawSql
 
 // Find by manual SQL
 Customer::findBySql("SELECT * FROM main_customers")->all();
@@ -208,7 +221,10 @@ try {
 # ===============================================
 # USING QUERY STRING eg. in REST API (DataFilter)
 # ===============================================
-// Documentation: https://www.yiiframework.com/doc/guide/2.0/en/rest-resources#fields, https://www.yiiframework.com/doc/api/2.0/yii-data-datafilter
+// Documentation:
+// - https://www.yiiframework.com/doc/guide/2.0/en/rest-filtering-collections
+// - https://www.yiiframework.com/doc/guide/2.0/en/rest-resources#fields
+// - https://www.yiiframework.com/doc/api/2.0/yii-data-datafilter
 
 // Search for lastname being Smith
 filter[lastname]=Smith
