@@ -50,7 +50,7 @@ Customer::find()
 
 // Use IN & NOT IN:
 ->andWhere(['in', 'moduleID', [1,2,3]])
-->andWhere(['moduleID', => [1,2,3]])
+->andWhere(['moduleID' => [1,2,3]])
 ->andWhere(['not in', 'moduleID', [1,2,3]])
 ->andWhere(['not', ['lm_pagenum' => [1,2,3]]])
 
